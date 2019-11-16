@@ -1,0 +1,27 @@
+.characterSelectable {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 20px;
+    border: 2px solid white;
+    margin: 5px;
+    text-transform: uppercase;
+    color: white;
+    display: inline-block;
+}
+
+.characterSelectableDisabled {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    font-size: 20px;
+    border: 2px solid white;
+    margin: 5px;
+    text-transform: uppercase;
+    color: white;
+    display: inline-block;
+    opacity: 0.4;
+    pointer-events: none;
+    text-decoration: line-through;
+}

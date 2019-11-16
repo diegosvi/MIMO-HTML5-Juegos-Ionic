@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { AhorcadoPage } from './ahorcado.page';
 import { AnswerComponent } from 'src/app/componentes/answer/answer.component';
+import { CharactersBoxComponent } from 'src/app/componentes/characters-box/characters-box.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AhorcadoPage, AnswerComponent]
+  declarations: [AhorcadoPage, AnswerComponent, CharactersBoxComponent]
 })
 export class AhorcadoPageModule {}

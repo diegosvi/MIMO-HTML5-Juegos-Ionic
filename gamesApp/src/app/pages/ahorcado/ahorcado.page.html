@@ -12,6 +12,7 @@
   <div class="App">
 
     <answer [words]="words" [answer]="answer"></answer>
+    <characters-box [letters]="letters" [numbers]="numbers" (select)="selectCharacter($event)"></characters-box>
 
   </div>
 
