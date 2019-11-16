@@ -95,6 +95,14 @@ export class AhorcadoPage implements OnInit {
     return success
   }
 
+  resetBoard() {
+    this.getMovie();
+    this.letters.map((letter => {
+      letter.disabled = false;
+    }));
+    this.numbers.map((number => {
+      number.disabled = false;
+    }));
   }
 
 }

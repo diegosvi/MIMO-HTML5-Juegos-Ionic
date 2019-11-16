@@ -14,6 +14,7 @@
     <answer [words]="words" [answer]="answer"></answer>
     <characters-box [letters]="letters" [numbers]="numbers" (select)="selectCharacter($event)"></characters-box>
 
+    <ion-button color="medium" (click)="resetBoard()">Reiniciar partida</ion-button>
   </div>
 
 </ion-content>
