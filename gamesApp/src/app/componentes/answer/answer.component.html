@@ -1,0 +1,7 @@
+<ul *ngFor="let word of words; let i = index;" class="answer">
+  <li *ngFor="let letter of word.split(''); let j = index;" class="characterInAnswer" disabled>
+    <span *ngIf="this.answer[i][j] === '-'">{{letter}}</span>
+    <span *ngIf="this.answer[i][j] !== '-'" class="visible">{{letter}}</span>
+  </li>
+  <li class="spaceInAnswer" disabled></li>
+</ul>
