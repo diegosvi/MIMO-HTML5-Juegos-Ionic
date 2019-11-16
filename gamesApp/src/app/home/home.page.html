@@ -1,10 +1,23 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      Juegos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  
+  <ion-list>
+    <ion-list-header>
+      <ion-title>Elige un juego</ion-title>
+    </ion-list-header>
+    <ion-item>
+      <ion-button size="large" detail [routerLink]="['/ahorcado']">Ahorcado</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-button size="large" detail [routerLink]="['/tres-en-raya']">Tres en Raya</ion-button>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
