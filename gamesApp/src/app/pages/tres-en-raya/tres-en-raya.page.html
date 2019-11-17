@@ -11,11 +11,11 @@
 
   <div>
     <header>
-        <h4 id="title">{{title}}</h4>
+      <h4 id="title">{{title}}</h4>
     </header>
-    <board [matrix]="matrix" (select)="playerTurn($event)"></board>
+    <board [matrix]="matrix" [gameFinished]="gameFinished" (select)="playerTurn($event)"></board>
     <footer>
-        <ion-button color="medium" (click)="resetBoard()">Reiniciar partida</ion-button>
+      <ion-button color="medium" (click)="resetBoard()">Reiniciar partida</ion-button>
     </footer>
   </div>
 

@@ -9,11 +9,14 @@ import { EventEmitter } from '@angular/core';
 export class BoardComponent implements OnInit {
 
   @Input() matrix;
+  @Input() gameFinished;
   @Output() select = new EventEmitter();
+  X_symbol = "../../../assets/images/tic-tac-toe/X_symbol.png";
+  O_symbol = "../../../assets/images/tic-tac-toe/O_symbol.png";
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   cellSelected(event) {
     const id = event.srcElement.id.split("");

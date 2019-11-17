@@ -33,14 +33,19 @@ tr {
     height: 33%;
 }
 
-.normalCell {
+.enabledCell {
     width: 33%;
     border: 5px solid black;
 }
 
-.normalCell:not(.disable):hover {
+.enabledCell:hover {
     cursor: pointer;
     background: #66CDAA;
+}
+
+.disabledCell {
+    width: 33%;
+    border: 5px solid black;
 }
 
 .winCell {

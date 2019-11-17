@@ -22,4 +22,4 @@ const routes: Routes = [
   ],
   declarations: [TresEnRayaPage, BoardComponent]
 })
-export class TresEnRayaPageModule {}
+export class TresEnRayaPageModule { }
