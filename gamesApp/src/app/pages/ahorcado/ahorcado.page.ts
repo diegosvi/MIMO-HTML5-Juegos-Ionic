@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MoviesService } from '../../servicios/movies.service';
 
+const imagePath = "../../../assets/images/hangman/";
+
 @Component({
   selector: 'app-ahorcado',
   templateUrl: './ahorcado.page.html',
@@ -8,6 +10,9 @@ import { MoviesService } from '../../servicios/movies.service';
 })
 export class AhorcadoPage implements OnInit {
 
+  title = "Iniciar partida";
+  image = imagePath+"hangman1.png";
+  attempts = 8;
   movies;
   movie;
   words;
@@ -78,6 +83,21 @@ export class AhorcadoPage implements OnInit {
 
   selectCharacter(character) {
     var success = this.checkAnswer(character);
+    if (!success) {
+      this.attempts--;
+    }
+    if (this.gameFinished()) {
+      this.title = "Has ganado!";
+      this.image = imagePath+"game_won.png";
+      this.showAnswer();
+    } else if (this.attempts > 0) {
+      this.title = "Te quedan " + this.attempts + " intentos";
+      this.image = this.setImage();
+    } else {
+      this.title = "Has perdido";
+      this.image = imagePath+"game_lost.png";
+      this.showAnswer();
+    }
   }
 
   checkAnswer(character) {
@@ -95,7 +115,35 @@ export class AhorcadoPage implements OnInit {
     return success
   }
 
+  gameFinished() {
+    var gameFinished = true;
+    for (let word of this.answer) {
+      for (let character of word) {
+        if (character === '-') { gameFinished = false }
+      }
+    }
+    return gameFinished;
+  }
+
+  setImage() {
+    var imageId = 9 - this.attempts;
+    return imagePath+"hangman"+imageId+".png";
+    
+  }
+
+  showAnswer() {
+    this.attempts = 0;
+    this.answer = this.words.map((word) => {
+      return word.split("").map((c) => {
+        return c;
+      });
+    });
+  }
+
   resetBoard() {
+    this.title = "Iniciar partida";
+    this.image = imagePath+"hangman1.png";
+    this.attempts = 8;
     this.getMovie();
     this.letters.map((letter => {
       letter.disabled = false;

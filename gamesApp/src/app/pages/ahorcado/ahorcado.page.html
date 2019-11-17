@@ -10,11 +10,17 @@
 <ion-content>
 
   <div class="App">
-
-    <answer [words]="words" [answer]="answer"></answer>
-    <characters-box [letters]="letters" [numbers]="numbers" (select)="selectCharacter($event)"></characters-box>
-
-    <ion-button color="medium" (click)="resetBoard()">Reiniciar partida</ion-button>
+    <header>
+        <h4 id="title">{{title}}</h4>
+    </header>
+    <section>
+        <game-image [imagePath]="image"></game-image>
+        <answer [words]="words" [answer]="answer"></answer>
+        <characters-box *ngIf="attempts > 0" [letters]="letters" [numbers]="numbers" (select)="selectCharacter($event)"></characters-box>
+    </section>
+    <footer>
+        <ion-button color="medium" (click)="resetBoard()">Reiniciar partida</ion-button>
+    </footer>
   </div>
 
 </ion-content>

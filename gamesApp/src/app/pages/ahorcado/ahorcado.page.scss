@@ -2,6 +2,10 @@ html {
   background-color: #282c34;
 }
 
+ion-content {
+  --background: #282c34;
+}
+
 .App {
   text-align: center;
   background-color: #282c34;
@@ -26,4 +30,23 @@ ul {
   padding: 0;
   text-align: center;
   margin: 20px auto;
+}
+h1 {
+  color: white;
+  font-size: 56px;
+  font-family: Creepster, sans-serif;
+}
+
+#title {
+  text-align: center;
+  margin: 20px 0;
+  color: white;
+}
+
+section {
+  display: block;
+}
+
+button:hover {
+  cursor: pointer;
 }
