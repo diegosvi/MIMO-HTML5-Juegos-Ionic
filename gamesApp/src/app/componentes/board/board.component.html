@@ -1,0 +1,12 @@
+<div id="table_div">
+    <table class="table-striped no-bordered" id="board">
+        <tbody>
+            <tr *ngFor="let row of matrix; let i = index;">
+                <td class="normalCell" id="{{i}}{{j}}" (click)="cellSelected($event)" *ngFor="let column of row; let j = index;">
+                    <img src="../../../assets/images/tic-tac-toe/X_symbol.png" alt="X_symbol" *ngIf="matrix[i][j] === 'X'">
+                    <img src="../../../assets/images/tic-tac-toe/O_symbol.png" alt="O_symbol" *ngIf="matrix[i][j] === 'O'">
+                </td>
+            </tr>
+        </tbody>
+    </table>    
+</div>

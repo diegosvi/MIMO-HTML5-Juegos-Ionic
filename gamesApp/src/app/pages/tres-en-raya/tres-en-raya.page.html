@@ -9,4 +9,14 @@
 
 <ion-content>
 
+  <div>
+    <header>
+        <h4 id="title">{{title}}</h4>
+    </header>
+    <board [matrix]="matrix" (select)="playerTurn($event)"></board>
+    <footer>
+        <ion-button color="medium" (click)="resetBoard()">Reiniciar partida</ion-button>
+    </footer>
+  </div>
+
 </ion-content>

@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
-
 import { TresEnRayaPage } from './tres-en-raya.page';
+import { BoardComponent } from 'src/app/componentes/board/board.component';
 
 const routes: Routes = [
   {
@@ -21,6 +20,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [TresEnRayaPage]
+  declarations: [TresEnRayaPage, BoardComponent]
 })
 export class TresEnRayaPageModule {}
