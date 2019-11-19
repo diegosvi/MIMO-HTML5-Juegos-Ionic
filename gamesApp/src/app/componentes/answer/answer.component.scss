@@ -1,24 +1,27 @@
 .answer {
+    height: 30px;
     display: inline-block;
     padding: 0;
     text-align: center;
     margin: 20px 0;
-}
-
-.characterInAnswer {
+  }
+  
+  .characterInAnswer {
     width: 15px;
+    height: 100%;
     font-size: 20px;
+    vertical-align: middle;
     display: inline-block;
     font-weight: bold;
     display: inline-block;
     border-bottom: 1px solid white;
-    margin: 5px;
+    margin: auto 5px;
     text-transform: uppercase;
     color: white;
     display: inline-block;
-}
-
-.spaceInAnswer {
+  }
+  
+  .spaceInAnswer {
     width: 15px;
     height: 15px;
     display: inline-block;
@@ -26,12 +29,4 @@
     text-transform: uppercase;
     color: white;
     display: inline-block;
-}
-
-span {
-    visibility: hidden;
-}
-
-span.visible {
-    visibility: visible;
-}
+  }
