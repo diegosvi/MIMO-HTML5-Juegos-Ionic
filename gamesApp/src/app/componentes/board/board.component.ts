@@ -10,6 +10,7 @@ export class BoardComponent implements OnInit {
 
   @Input() matrix;
   @Input() gameFinished;
+  @Input() victoryCells;
   @Output() select = new EventEmitter();
   X_symbol = "../../../assets/images/tic-tac-toe/X_symbol.png";
   O_symbol = "../../../assets/images/tic-tac-toe/O_symbol.png";

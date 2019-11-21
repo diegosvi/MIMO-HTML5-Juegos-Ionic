@@ -33,7 +33,7 @@ tr {
     height: 33%;
 }
 
-.enabledCell {
+td {
     width: 33%;
     border: 5px solid black;
 }
@@ -43,15 +43,8 @@ tr {
     background: #66CDAA;
 }
 
-.disabledCell {
-    width: 33%;
-    border: 5px solid black;
-}
-
 .winCell {
     background-color: #66CDAA;
-    width: 33%;
-    border: 5px solid black;
 }
 
 img {

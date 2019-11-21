@@ -3,7 +3,7 @@
         <tbody>
             <tr *ngFor="let row of matrix; let i = index;">
                 <td *ngFor="let column of row; let j = index;"
-                    [ngClass]="{'enabledCell': !gameFinished, 'disabledCell' : gameFinished}" id="{{i}}{{j}}"
+                    [ngClass]="{'enabledCell': !gameFinished && matrix[i][j] === '', 'winCell': gameFinished && victoryCells.includes(i*3+j)}" id="{{i}}{{j}}"
                     (click)="cellSelected($event)">
                     <img [src]="X_symbol" alt="X_symbol" *ngIf="matrix[i][j] === 'X'">
                     <img [src]="O_symbol" alt="O_symbol" *ngIf="matrix[i][j] === 'O'">

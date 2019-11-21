@@ -17,15 +17,16 @@ export class TresEnRayaPage implements OnInit {
   gameFinished = false;
   move = 0;
   matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
+  victoryCells = Array(this.dimension).fill(EMPTY_CELL);
 
   constructor() { }
 
   ngOnInit() { }
 
   playerTurn(id) {
-    const row = id[0];
-    const column = id[1];
-    if (this.gameFinished == false && this.matrix[row][column] == EMPTY_CELL) {
+    const row = parseInt(id[0]);
+    const column = parseInt(id[1]);
+    if (!this.gameFinished && typeof row !== "undefined" && typeof column !== "undefined" && this.matrix[row][column] == EMPTY_CELL) {
       this.matrix = this.matrix.map((r, i) => {
         if (row == i) {
           return r.map((c, j) => {
@@ -35,20 +36,11 @@ export class TresEnRayaPage implements OnInit {
           return r;
         }
       });
-      this.checkBoard(this.matrix, this.turn, row, column);
+      this.gameFinished = this.checkCells(this.matrix, this.turn, row, column);
       if (this.gameFinished == false) {
         this.turn = this.turn === X ? O : X;
         this.title = "Turno de " + this.turn;
       }
-    }
-  }
-
-  checkBoard(matrix, currentTurn, posX, posY) {
-    if (!(matrix.map(row => { return row.includes(EMPTY_CELL) })).includes(true)) {
-      this.title = "Empate";
-      this.gameFinished = true;
-    } else {
-      this.gameFinished = this.checkCells(matrix, currentTurn, posX, posY);
     }
   }
 
@@ -67,20 +59,34 @@ export class TresEnRayaPage implements OnInit {
     }
 
     if (row === n) {
-      // this.setVictoryCells(x*n,1);
+      this.setVictoryCells(x*n,1);
       return true;
     } else if (col === n) {
-      // this.setVictoryCells(y,n);
+      this.setVictoryCells(y,n);
       return true;
     } else if (diag === n) {
-      // this.setVictoryCells(0,n+1);
+      this.setVictoryCells(0,n+1);
       return true;
     } else if (rdiag === n) {
-      // this.setVictoryCells(n-1,n-1);
+      this.setVictoryCells(n-1,n-1);
+      return true;
+    } else if (!this.isThereEmptyCell(matrix)) {
+      this.title = "Empate";
       return true;
     } else {
       return false;
     }
+  }
+
+  setVictoryCells(init, sum) {
+    this.title = "Victoria de " + this.matrix[Math.floor(init / this.dimension)][Math.floor(init % this.dimension)];
+    for (var i = 0; i < this.dimension; i++) {
+      this.victoryCells[i] = init + (i * sum);
+    }
+  }
+
+  isThereEmptyCell(matrix) {
+    return (matrix.map(row => { return row.includes(EMPTY_CELL) })).includes(true);
   }
 
   resetBoard() {
