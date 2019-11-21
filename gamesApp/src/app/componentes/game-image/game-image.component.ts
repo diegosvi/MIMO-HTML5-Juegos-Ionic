@@ -9,8 +9,8 @@ export class GameImageComponent implements OnInit {
 
   @Input() imagePath;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

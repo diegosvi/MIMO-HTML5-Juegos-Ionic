@@ -11,7 +11,7 @@ const imagePath = "../../../assets/images/hangman/";
 export class AhorcadoPage implements OnInit {
 
   title = "Iniciar partida";
-  image = imagePath+"hangman1.png";
+  image = imagePath + "hangman1.png";
   attempts = 8;
   movies;
   movie;
@@ -69,16 +69,16 @@ export class AhorcadoPage implements OnInit {
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getMovie() {
     this.movie = this.movies[Math.floor(Math.random() * this.movies.length)];
-        this.words = this.movie.split(" ");
-        this.answer = this.words.map((word) => {
-          return word.split("").map(() => {
-            return "-";
-          });
-        });
+    this.words = this.movie.split(" ");
+    this.answer = this.words.map((word) => {
+      return word.split("").map(() => {
+        return "-";
+      });
+    });
   }
 
   selectCharacter(character) {
@@ -88,14 +88,14 @@ export class AhorcadoPage implements OnInit {
     }
     if (this.gameFinished()) {
       this.title = "Has ganado!";
-      this.image = imagePath+"game_won.png";
+      this.image = imagePath + "game_won.png";
       this.showAnswer();
     } else if (this.attempts > 0) {
       this.title = "Te quedan " + this.attempts + " intentos";
       this.image = this.setImage();
     } else {
       this.title = "Has perdido";
-      this.image = imagePath+"game_lost.png";
+      this.image = imagePath + "game_lost.png";
       this.showAnswer();
     }
   }
@@ -127,8 +127,8 @@ export class AhorcadoPage implements OnInit {
 
   setImage() {
     var imageId = 9 - this.attempts;
-    return imagePath+"hangman"+imageId+".png";
-    
+    return imagePath + "hangman" + imageId + ".png";
+
   }
 
   showAnswer() {
@@ -142,7 +142,7 @@ export class AhorcadoPage implements OnInit {
 
   resetBoard() {
     this.title = "Iniciar partida";
-    this.image = imagePath+"hangman1.png";
+    this.image = imagePath + "hangman1.png";
     this.attempts = 8;
     this.getMovie();
     this.letters.map((letter => {

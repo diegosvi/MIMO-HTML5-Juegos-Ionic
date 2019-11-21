@@ -24,4 +24,4 @@ const routes: Routes = [
   ],
   declarations: [AhorcadoPage, AnswerComponent, CharactersBoxComponent, GameImageComponent]
 })
-export class AhorcadoPageModule {}
+export class AhorcadoPageModule { }

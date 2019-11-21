@@ -1,6 +1,10 @@
 <ul>
-  <li  *ngFor="let letter of letters" [ngClass]="{'characterSelectable': !letter.disabled, 'characterSelectableDisabled' : letter.disabled}" (click)="selectCharacter($event)">{{letter.value}}</li>
+  <li *ngFor="let letter of letters"
+    [ngClass]="{'characterSelectable': !letter.disabled, 'characterSelectableDisabled' : letter.disabled}"
+    (click)="selectCharacter($event)">{{letter.value}}</li>
 </ul>
 <ul>
-    <li *ngFor="let number of numbers" [ngClass]="{'characterSelectable': !number.disabled, 'characterSelectableDisabled' : number.disabled}" (click)="selectCharacter($event)">{{number.value}}</li>
+  <li *ngFor="let number of numbers"
+    [ngClass]="{'characterSelectable': !number.disabled, 'characterSelectableDisabled' : number.disabled}"
+    (click)="selectCharacter($event)">{{number.value}}</li>
 </ul>

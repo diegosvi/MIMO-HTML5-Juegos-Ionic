@@ -14,7 +14,7 @@ export class MoviesService {
   }
 
   loadMovies(): Observable<any[]> {
-    return this.httpClient.get('/assets/movies.json').pipe(map( (data:any)  => data.movies ));
+    return this.httpClient.get('/assets/movies.json').pipe(map((data: any) => data.movies));
   }
 
   getMovies() {

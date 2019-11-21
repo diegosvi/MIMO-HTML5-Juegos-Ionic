@@ -44,7 +44,7 @@ export class TresEnRayaPage implements OnInit {
   }
 
   checkBoard(matrix, currentTurn, posX, posY) {
-    if (!( matrix.map(row => { return row.includes(EMPTY_CELL) })).includes(true)) {
+    if (!(matrix.map(row => { return row.includes(EMPTY_CELL) })).includes(true)) {
       this.title = "Empate";
       this.gameFinished = true;
     } else {
