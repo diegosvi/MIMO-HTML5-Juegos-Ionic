@@ -1,0 +1,10 @@
+<div>
+  <input type="radio" id="manual" name="mode" class="mode-radio" (click)="modeSelected($event)">
+  <ion-label for="manual"><span class="text-mode">Jugador vs Jugador</span></ion-label>
+  <div class="breaker2"></div>
+  <input type="radio" id="easy" name="mode" class="mode-radio" (click)="modeSelected($event)" checked>
+  <ion-label for="easy"><span class="text-mode">Jugador vs Máquina</span> (Fácil)</ion-label>
+  <div class="breaker"></div>
+  <input type="radio" id="difficult" name="mode" class="mode-radio" (click)="modeSelected($event)">
+  <ion-label for="difficult"><span class="text-mode">Jugador vs Máquina</span> (Difícil)</ion-label>
+</div>
