@@ -104,7 +104,7 @@ export class AhorcadoPage implements OnInit {
     var success = false;
     this.answer = this.words.map((word, i) => {
       return word.split("").map((c, j) => {
-        if (c === character) {
+        if (c === character || (character === "&amp;" && c === "&")) {
           success = true;
           return c
         } else {
