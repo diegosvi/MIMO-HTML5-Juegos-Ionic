@@ -48,6 +48,24 @@ export class TresEnRayaPage implements OnInit {
     });
   }
 
+  getRandomEmptyCell() {
+    var emptyCells = this.matrix.map((row, i) => {
+      return row.map((element, j) => {
+        if (element === "") {
+          return (i * this.dimension) + j;
+        }
+      });
+    }).map(row => {
+      return row.filter(Number.isFinite);
+    });
+    var emptyIds = emptyCells[0];
+    for (var i = 1; i < emptyCells.length; i++) {
+      emptyIds = emptyIds.concat(emptyCells[i]);
+    }
+    var number = this.getRandomNumber(0, emptyIds.length - 1);
+    return emptyIds[number];
+  }
+
   // MARK: Main functions
 
   playerTurn(id) {
@@ -69,6 +87,7 @@ export class TresEnRayaPage implements OnInit {
     this.gameFinished = false;
     this.move = 0;
     this.matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
+    this.victoryCells = Array(this.dimension).fill(EMPTY_CELL);
   }
 
   setGameMode(mode) {
@@ -130,16 +149,12 @@ export class TresEnRayaPage implements OnInit {
   // MARK: Computer functions
 
   computersTurn() {
-    var taken = false;
-    while (taken === false && this.move != 5) {
-      var id = this.chooseCell();
-      var row = Math.floor(id / this.dimension);
-      var column = Math.floor(id % this.dimension);
-      if (this.matrix[row][column] == EMPTY_CELL) {
-        taken = true;
-        this.writeInMatrix(row, column, this.turn);
-        this.checkGame(row, column);
-      }
+    var id = this.chooseCell();
+    var row = Math.floor(id / this.dimension);
+    var column = Math.floor(id % this.dimension);
+    if (this.matrix[row][column] == EMPTY_CELL) {
+      this.writeInMatrix(row, column, this.turn);
+      this.checkGame(row, column);
     }
   }
 
@@ -152,7 +167,7 @@ export class TresEnRayaPage implements OnInit {
       if (choice != -1) {
         return choice;
       } else {
-        return this.mode == EASY_MODE ? this.getRandomNumber(0, (this.dimension * this.dimension) - 1) : this.studyMove();
+        return this.mode == EASY_MODE ? this.getRandomEmptyCell() : this.studyMove();
       }
     }
   }
@@ -306,10 +321,10 @@ export class TresEnRayaPage implements OnInit {
             return 7;
           }
         } else {
-          return this.getRandomNumber(0, (this.dimension * this.dimension) - 1);
+          return this.getRandomEmptyCell();
         }
       default:
-        return this.getRandomNumber(0, (this.dimension * this.dimension) - 1);
+        return this.getRandomEmptyCell();
     }
   }
 
