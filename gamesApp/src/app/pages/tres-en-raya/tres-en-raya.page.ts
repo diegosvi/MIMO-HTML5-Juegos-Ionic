@@ -9,7 +9,7 @@ const EASY_MODE = "easy";
 @Component({
   selector: 'app-tres-en-raya',
   templateUrl: './tres-en-raya.page.html',
-  styleUrls: ['./tres-en-raya.page.scss'],
+  styleUrls: ['./tres-en-raya.page.scss', '../../app.component.scss'],
 })
 export class TresEnRayaPage implements OnInit {
 
@@ -51,7 +51,7 @@ export class TresEnRayaPage implements OnInit {
   getRandomEmptyCell() {
     var emptyCells = this.matrix.map((row, i) => {
       return row.map((element, j) => {
-        if (element === "") {
+        if (element === EMPTY_CELL) {
           return (i * this.dimension) + j;
         }
       });

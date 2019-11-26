@@ -6,7 +6,7 @@ const imagePath = "../../../assets/images/hangman/";
 @Component({
   selector: 'app-ahorcado',
   templateUrl: './ahorcado.page.html',
-  styleUrls: ['./ahorcado.page.scss'],
+  styleUrls: ['./ahorcado.page.scss', '../../app.component.scss'],
 })
 export class AhorcadoPage implements OnInit {
 
