@@ -21,6 +21,7 @@ export class TresEnRayaPage implements OnInit {
   move = 0;
   matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
   victoryCells = Array(this.dimension).fill(EMPTY_CELL);
+  minimaxOptions = new Map();
 
   constructor() { }
 
@@ -28,15 +29,15 @@ export class TresEnRayaPage implements OnInit {
 
   // MARK: Auxiliar functions
 
-  getRandomNumber(min, max) {
+  getRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  isThereEmptyCell(matrix) {
+  isThereEmptyCell(matrix: string[][]) {
     return (matrix.map(row => { return row.includes(EMPTY_CELL) })).includes(true);
   }
 
-  writeInMatrix(row, column, value) {
+  writeInMatrix(row: number, column: number, value: string) {
     this.matrix = this.matrix.map((r, i) => {
       if (row == i) {
         return r.map((c, j) => {
@@ -48,8 +49,8 @@ export class TresEnRayaPage implements OnInit {
     });
   }
 
-  getRandomEmptyCell() {
-    var emptyCells = this.matrix.map((row, i) => {
+  getEmptyCells(matrix: string[][]) {
+    var emptyCells = matrix.map((row, i) => {
       return row.map((element, j) => {
         if (element === EMPTY_CELL) {
           return (i * this.dimension) + j;
@@ -62,42 +63,18 @@ export class TresEnRayaPage implements OnInit {
     for (var i = 1; i < emptyCells.length; i++) {
       emptyIds = emptyIds.concat(emptyCells[i]);
     }
+    return emptyIds;
+  }
+
+  getRandomEmptyCell() {
+    var emptyIds = this.getEmptyCells(this.matrix);
     var number = this.getRandomNumber(0, emptyIds.length - 1);
     return emptyIds[number];
   }
 
-  // MARK: Main functions
-
-  playerTurn(id) {
-    const row = parseInt(id[0]);
-    const column = parseInt(id[1]);
-    if (!this.gameFinished && typeof row !== "undefined" && typeof column !== "undefined" && this.matrix[row][column] == EMPTY_CELL) {
-      this.move++;
-      this.writeInMatrix(row, column, this.turn);
-      this.checkGame(row, column);
-      if (!this.gameFinished && this.mode != MANUAL_MODE) {
-        this.computersTurn();
-      }
-    }
-  }
-
-  resetBoard() {
-    this.title = "Iniciar partida";
-    this.turn = X;
-    this.gameFinished = false;
-    this.move = 0;
-    this.matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
-    this.victoryCells = Array(this.dimension).fill(EMPTY_CELL);
-  }
-
-  setGameMode(mode) {
-    this.mode = mode;
-    this.resetBoard();
-  }
-
   // MARK: Board functions
 
-  checkGame(row, column) {
+  checkGame(row: number, column: number) {
     this.gameFinished = this.checkCells(this.matrix, this.turn, row, column);
     if (this.gameFinished == false) {
       this.turn = this.turn === X ? O : X;
@@ -105,7 +82,7 @@ export class TresEnRayaPage implements OnInit {
     }
   }
 
-  checkCells(matrix, value, x, y) {
+  checkCells(matrix: string[][], value: string, x: number, y: number) {
     var n = this.dimension;
     var col = 0;
     var row = 0;
@@ -139,11 +116,66 @@ export class TresEnRayaPage implements OnInit {
     }
   }
 
-  setVictoryCells(init, sum) {
+  setVictoryCells(init: number, sum: number) {
     this.title = "Victoria de " + this.matrix[Math.floor(init / this.dimension)][Math.floor(init % this.dimension)];
     for (var i = 0; i < this.dimension; i++) {
       this.victoryCells[i] = init + (i * sum);
     }
+  }
+
+  checkBoard(matrix: string[][], value: string) {
+    var n = this.dimension;
+    var col = 0;
+    var row = 0;
+    var diag = 0;
+    var rdiag = 0;
+
+    var cols = [];
+    var rows = [];
+
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
+        if (matrix[i][j] === value) row++;
+        if (matrix[j][i] === value) col++;
+      }
+      if (matrix[i][i] === value) diag++;
+      if (matrix[i][n - (i + 1)] === value) rdiag++;
+      cols.push(col === n);
+      rows.push(row === n);
+      col = 0;
+      row = 0;
+    }
+
+    return rows.includes(true) || cols.includes(true) || diag === n || rdiag === n;
+  }
+
+  // MARK: Main functions
+
+  playerTurn(id: string[]) {
+    const row = parseInt(id[0]);
+    const column = parseInt(id[1]);
+    if (!this.gameFinished && typeof row !== "undefined" && typeof column !== "undefined" && this.matrix[row][column] == EMPTY_CELL) {
+      this.move++;
+      this.writeInMatrix(row, column, this.turn);
+      this.checkGame(row, column);
+      if (!this.gameFinished && this.mode != MANUAL_MODE) {
+        this.computersTurn();
+      }
+    }
+  }
+
+  resetBoard() {
+    this.title = "Iniciar partida";
+    this.turn = X;
+    this.gameFinished = false;
+    this.move = 0;
+    this.matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
+    this.victoryCells = Array(this.dimension).fill(EMPTY_CELL);
+  }
+
+  setGameMode(mode: string) {
+    this.mode = mode;
+    this.resetBoard();
   }
 
   // MARK: Computer functions
@@ -159,172 +191,169 @@ export class TresEnRayaPage implements OnInit {
   }
 
   chooseCell() {
-    var choice = this.tryToWin(O);
-    if (choice != -1) {
-      return choice;
-    } else {
-      choice = this.tryToWin(X);
+    if (this.mode == EASY_MODE) {
+      var choice = this.tryToWin(X);
       if (choice != -1) {
         return choice;
       } else {
-        return this.mode == EASY_MODE ? this.getRandomEmptyCell() : this.studyMove();
-      }
-    }
-  }
-
-  tryToWin(value) {
-    //Primera fila
-    if (this.matrix[0][0] == value && this.matrix[0][1] == value && this.matrix[0][2] == EMPTY_CELL) {
-      return 2;
-    } else if (this.matrix[0][0] == value && this.matrix[0][2] == value && this.matrix[0][1] == EMPTY_CELL) {
-      return 1;
-    } else if (this.matrix[0][1] == value && this.matrix[0][2] == value && this.matrix[0][0] == EMPTY_CELL) {
-      return 0;
-    }
-    //Segunda fila
-    else if (this.matrix[1][0] == value && this.matrix[1][1] == value && this.matrix[1][2] == EMPTY_CELL) {
-      return 5;
-    } else if (this.matrix[1][0] == value && this.matrix[1][2] == value && this.matrix[1][1] == EMPTY_CELL) {
-      return 4;
-    } else if (this.matrix[1][1] == value && this.matrix[1][2] == value && this.matrix[1][0] == EMPTY_CELL) {
-      return 3;
-    }
-    //Tercera fila
-    else if (this.matrix[2][0] == value && this.matrix[2][1] == value && this.matrix[2][2] == EMPTY_CELL) {
-      return 8;
-    } else if (this.matrix[2][0] == value && this.matrix[2][2] == value && this.matrix[2][1] == EMPTY_CELL) {
-      return 7;
-    } else if (this.matrix[2][1] == value && this.matrix[2][2] == value && this.matrix[2][0] == EMPTY_CELL) {
-      return 6;
-    }
-    //Primera columna
-    else if (this.matrix[0][0] == value && this.matrix[1][0] == value && this.matrix[2][0] == EMPTY_CELL) {
-      return 6;
-    } else if (this.matrix[0][0] == value && this.matrix[2][0] == value && this.matrix[1][0] == EMPTY_CELL) {
-      return 3;
-    } else if (this.matrix[1][0] == value && this.matrix[2][0] == value && this.matrix[0][0] == EMPTY_CELL) {
-      return 0;
-    }
-    //Segunda columna
-    else if (this.matrix[0][1] == value && this.matrix[1][1] == value && this.matrix[2][1] == EMPTY_CELL) {
-      return 7;
-    } else if (this.matrix[0][1] == value && this.matrix[2][1] == value && this.matrix[1][1] == EMPTY_CELL) {
-      return 4;
-    } else if (this.matrix[1][1] == value && this.matrix[2][1] == value && this.matrix[0][1] == EMPTY_CELL) {
-      return 1;
-    }
-    //Tercera columna
-    else if (this.matrix[0][2] == value && this.matrix[1][2] == value && this.matrix[2][2] == EMPTY_CELL) {
-      return 8;
-    } else if (this.matrix[0][2] == value && this.matrix[2][2] == value && this.matrix[1][2] == EMPTY_CELL) {
-      return 5;
-    } else if (this.matrix[1][2] == value && this.matrix[2][2] == value && this.matrix[0][2] == EMPTY_CELL) {
-      return 2;
-    }
-    //Primera diagonal
-    else if (this.matrix[0][0] == value && this.matrix[1][1] == value && this.matrix[2][2] == EMPTY_CELL) {
-      return 8;
-    } else if (this.matrix[0][0] == value && this.matrix[2][2] == value && this.matrix[1][1] == EMPTY_CELL) {
-      return 4;
-    } else if (this.matrix[1][1] == value && this.matrix[2][2] == value && this.matrix[0][0] == EMPTY_CELL) {
-      return 0;
-    }
-    //Segunda diagonal
-    else if (this.matrix[0][2] == value && this.matrix[1][1] == value && this.matrix[2][0] == EMPTY_CELL) {
-      return 6;
-    } else if (this.matrix[0][2] == value && this.matrix[2][0] == value && this.matrix[1][1] == EMPTY_CELL) {
-      return 4;
-    } else if (this.matrix[1][1] == value && this.matrix[2][0] == value && this.matrix[0][2] == EMPTY_CELL) {
-      return 2;
-    }
-    //Otro
-    else {
-      return -1;
-    }
-  }
-
-  studyMove() {
-    switch (this.move) {
-      //Primer turno
-      case 1:
-        if (this.matrix[0][0] == X || this.matrix[0][2] == X || this.matrix[2][0] == X || this.matrix[2][2] == X) {
-          return 4;
-        } else if (this.matrix[1][1] == X) {
-          return 0;
-        } else if (this.matrix[0][1] == X) {
-          return 2;
-        } else if (this.matrix[1][0] == X) {
-          return 6;
-        } else {
-          return 8;
-        }
-      //Segundo turno: solo debemos comprobar las opciones que no se hayan descartado anteriormente con la función tryToWin
-      case 2:
-        if (this.matrix[0][0] == X && this.matrix[1][1] == O) {
-          if (this.matrix[1][2] == X) {
-            return 1;
-          } else {
-            return 5;
-          }
-        } else if (this.matrix[0][1] == X && this.matrix[0][2] == O) {
-          if (this.matrix[0][0] == X || this.matrix[1][0] == X) {
-            return 8;
-          } else if (this.matrix[1][2] == X) {
-            return 4;
-          } else {
-            return 7;
-          }
-        } else if (this.matrix[0][2] == X && this.matrix[1][1] == O) {
-          if (this.matrix[1][0] == X) {
-            return 1;
-          } else {
-            return 3;
-          }
-        } else if (this.matrix[1][0] == X && this.matrix[2][0] == O) {
-          if (this.matrix[0][0] == X || this.matrix[0][1] == X) {
-            return 8;
-          } else if (this.matrix[2][2] == X) {
-            return 5;
-          } else {
-            return 4;
-          }
-        } else if (this.matrix[1][1] == X && this.matrix[0][0] == O) {
-          return 6;
-        } else if (this.matrix[1][2] == X && this.matrix[2][2] == O) {
-          if (this.matrix[0][0] == X || this.matrix[2][1] == X) {
-            return 4;
-          } else if (this.matrix[2][0] == X) {
-            return 3;
-          } else {
-            return 6;
-          }
-        } else if (this.matrix[2][0] == X && this.matrix[1][1] == O) {
-          if (this.matrix[1][2] == X) {
-            return 7;
-          } else {
-            return 3;
-          }
-        } else if (this.matrix[2][1] == X && this.matrix[2][2] == O) {
-          if (this.matrix[1][0] == X || this.matrix[2][0] == X) {
-            return 2;
-          } else if (this.matrix[0][2] == X) {
-            return 1;
-          } else {
-            return 4;
-          }
-        } else if (this.matrix[2][2] == X && this.matrix[1][1] == O) {
-          if (this.matrix[0][0] == X) {
-            return 5;
-          } else if (this.matrix[0][1] == X) {
-            return 0;
-          } else {
-            return 7;
-          }
-        } else {
-          return this.getRandomEmptyCell();
-        }
-      default:
         return this.getRandomEmptyCell();
+      }
+    } else {
+      return this.minimax(this.matrix, true, (res: any) => { }, 0);
+    }
+  }
+
+  tryToWin(value: string) {
+    var id = -1;
+
+    //Get available moves
+    var emptyIds = this.getEmptyCells(this.matrix);
+
+    //Iterate over available moves
+    emptyIds.forEach(element => {
+
+      var row = Math.floor(element / this.dimension);
+      var column = Math.floor(element % this.dimension);
+
+      var child = this.matrix.map((r, i) => {
+        if (row == i) {
+          return r.map((c, j) => {
+            return column == j ? value : c;
+          });
+        } else {
+          return r;
+        }
+      });
+
+      var victory = this.checkBoard(child, value);
+      if (victory) {
+        id = element;
+      }
+    });
+
+    return id;
+  }
+
+  minimax(board: string[][], maximizing: boolean, callback: { (res: any): void; }, depth: number) {
+
+    var dimension = this.dimension;
+
+    if (depth == 0) this.minimaxOptions.clear();
+    var Xvictory = this.checkBoard(board, X);
+    var Ovictory = this.checkBoard(board, O);
+    if (Xvictory) {
+      return -100 + depth;
+    } else if (Ovictory) {
+      return 100 - depth;
+    } else if (depth === dimension + 1) {
+      return 0;
+    }
+
+    if (maximizing) {
+      var best = -100;
+
+      //Get available moves
+      var emptyIds = this.getEmptyCells(board);
+
+      //Iterate over available moves
+      emptyIds.forEach(element => {
+
+        var row = Math.floor(element / dimension);
+        var column = Math.floor(element % dimension);
+
+        var child = board.map((r, i) => {
+          if (row == i) {
+            return r.map((c, j) => {
+              return column == j ? O : c;
+            });
+          } else {
+            return r;
+          }
+        });
+
+        var node_value = this.minimax(child, false, callback, depth + 1);
+        best = Math.max(best, node_value);
+
+        if (depth === 0) {
+          var moves = this.minimaxOptions.has(node_value) ? this.minimaxOptions.get(node_value).toString() + "," + element.toString() : element
+          this.minimaxOptions.set(node_value, moves)
+        }
+
+      });
+
+      var result: number;
+      if (depth === 0) {
+
+        if (this.minimaxOptions.has(-100)) {
+          best = -100;
+        } else if (this.minimaxOptions.has(100)) {
+          best = 100;
+        }
+
+        var bestResult = this.minimaxOptions.get(best);
+        if (typeof bestResult == "string") {
+
+          var bestArray = bestResult.split(",").map(id => parseInt(id));
+          if (bestArray.length === Math.pow(dimension, 2) - 1) {
+            if (bestArray.includes(0)) {
+              result = 0;
+            } else if (bestArray.includes(dimension - 1)) {
+              result = dimension - 1;
+            } else if (bestArray.includes((dimension - 1) * dimension)) {
+              result = (dimension - 1) * dimension;
+            } else if (bestArray.includes(Math.pow(dimension, 2) - 1)) {
+              result = Math.pow(dimension, 2) - 1;
+            } else {
+              var random = this.getRandomNumber(0, bestArray.length - 1);
+              result = bestArray[random];
+            }
+          } else {
+            var random = this.getRandomNumber(0, bestArray.length - 1);
+            result = bestArray[random];
+          }
+          
+        } else {
+          result = bestResult;
+        }
+
+        callback(result);
+        return result;
+      }
+      return best;
+    }
+
+    if (!maximizing) {
+      var best = 100;
+
+      //Get available moves
+      var emptyIds = this.getEmptyCells(board);
+
+      //Iterate over available moves
+      emptyIds.forEach(element => {
+
+        var row = Math.floor(element / dimension);
+        var column = Math.floor(element % dimension);
+
+        var child = board.map((r, i) => {
+          if (row == i) {
+            return r.map((c, j) => {
+              return column == j ? X : c;
+            });
+          } else {
+            return r;
+          }
+        });
+
+        var node_value = this.minimax(child, true, callback, depth + 1);
+        best = Math.min(best, node_value);
+
+        if (depth === 0) {
+          var moves = this.minimaxOptions.has(node_value) ? this.minimaxOptions.get(node_value).toString() + "," + element.toString() : element
+          this.minimaxOptions.set(node_value, moves)
+        }
+
+      });
+      return best;
     }
   }
 
