@@ -18,7 +18,6 @@ export class TresEnRayaPage implements OnInit {
   dimension = 3;
   turn = X;
   gameFinished = false;
-  move = 0;
   matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
   victoryCells = Array(this.dimension).fill(EMPTY_CELL);
   minimaxOptions = new Map();
@@ -155,7 +154,6 @@ export class TresEnRayaPage implements OnInit {
     const row = parseInt(id[0]);
     const column = parseInt(id[1]);
     if (!this.gameFinished && typeof row !== "undefined" && typeof column !== "undefined" && this.matrix[row][column] == EMPTY_CELL) {
-      this.move++;
       this.writeInMatrix(row, column, this.turn);
       this.checkGame(row, column);
       if (!this.gameFinished && this.mode != MANUAL_MODE) {
@@ -168,7 +166,6 @@ export class TresEnRayaPage implements OnInit {
     this.title = "Iniciar partida";
     this.turn = X;
     this.gameFinished = false;
-    this.move = 0;
     this.matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
     this.victoryCells = Array(this.dimension).fill(EMPTY_CELL);
   }
