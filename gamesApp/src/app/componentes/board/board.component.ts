@@ -8,6 +8,7 @@ import { EventEmitter } from '@angular/core';
 })
 export class BoardComponent implements OnInit {
 
+  @Input() dimension;
   @Input() matrix;
   @Input() gameFinished;
   @Input() victoryCells;

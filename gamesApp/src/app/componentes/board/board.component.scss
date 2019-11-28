@@ -30,17 +30,52 @@ tbody {
 
 tr {
     width: 100%;
+}
+
+.tr3 {
     height: 33%;
 }
 
+.tr4 {
+    height: 25%;
+}
+
 td {
-    width: 33%;
     border: 5px solid black;
 }
 
-.enabledCell:hover {
+.td3 {
+    width: 33%;
+}
+
+.td3:hover {
     cursor: pointer;
     background: #66CDAA;
+}
+
+.disabledTd3 {
+    width: 33%;
+}
+
+.winTd3 {
+    background-color: #66CDAA;
+}
+
+.td4 {
+    width: 25%;
+}
+
+.td4:hover {
+    cursor: pointer;
+    background: #66CDAA;
+}
+
+.disabledTd4 {
+    width: 25%;
+}
+
+.winTd4 {
+    background-color: #66CDAA;
 }
 
 .winCell {

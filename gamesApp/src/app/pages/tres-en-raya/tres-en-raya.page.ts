@@ -15,7 +15,7 @@ export class TresEnRayaPage implements OnInit {
 
   mode = EASY_MODE;
   title = "Iniciar partida";
-  dimension = 3;
+  dimension = 0;
   turn = X;
   gameFinished = false;
   matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
@@ -168,6 +168,16 @@ export class TresEnRayaPage implements OnInit {
     this.gameFinished = false;
     this.matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
     this.victoryCells = Array(this.dimension).fill(EMPTY_CELL);
+  }
+
+  setDimensionTo3() {
+    this.dimension = 3;
+    this.resetBoard();
+  }
+
+  setDimensionTo4() {
+    this.dimension = 4;
+    this.resetBoard();
   }
 
   setGameMode(mode: string) {

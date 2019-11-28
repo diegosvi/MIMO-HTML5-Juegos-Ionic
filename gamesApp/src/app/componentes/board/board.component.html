@@ -1,10 +1,20 @@
-<div id="table_div">
+<div id="table_div" *ngIf="dimension > 0">
     <table class="table-striped no-bordered" id="board">
-        <tbody>
-            <tr *ngFor="let row of matrix; let i = index;">
+        <tbody *ngIf="dimension === 3">
+            <tr class="tr3" *ngFor="let row of matrix; let i = index;">
                 <td *ngFor="let column of row; let j = index;"
-                    [ngClass]="{'enabledCell': !gameFinished && matrix[i][j] === '', 'winCell': gameFinished && victoryCells.includes(i*3+j)}" id="{{i}}{{j}}"
-                    (click)="cellSelected($event)">
+                    [ngClass]="{'winTd3': gameFinished && victoryCells.includes(i*3+j), 'td3': !gameFinished && matrix[i][j] === '', 'disabledTd3': gameFinished || matrix[i][j] !== ''}"
+                    id="{{i}}{{j}}" (click)="cellSelected($event)">
+                    <img [src]="X_symbol" alt="X_symbol" *ngIf="matrix[i][j] === 'X'">
+                    <img [src]="O_symbol" alt="O_symbol" *ngIf="matrix[i][j] === 'O'">
+                </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="dimension === 4">
+            <tr class="tr4" *ngFor="let row of matrix; let i = index;">
+                <td *ngFor="let column of row; let j = index;"
+                [ngClass]="{'winTd4': gameFinished && victoryCells.includes(i*4+j), 'td4': !gameFinished && matrix[i][j] === '', 'disabledTd4': gameFinished || matrix[i][j] !== ''}"
+                    id="{{i}}{{j}}" (click)="cellSelected($event)">
                     <img [src]="X_symbol" alt="X_symbol" *ngIf="matrix[i][j] === 'X'">
                     <img [src]="O_symbol" alt="O_symbol" *ngIf="matrix[i][j] === 'O'">
                 </td>
