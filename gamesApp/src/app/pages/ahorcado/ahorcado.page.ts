@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MoviesService } from '../../servicios/movies.service';
+import { MoviesService } from '../../servicios/movies/movies.service';
+import { StorageService } from 'src/app/servicios/storage/storage.service';
 
 const imagePath = "../../../assets/images/hangman/";
+const VICTORY = 0;
+const DEFEAT = 1;
 
 @Component({
   selector: 'app-ahorcado',
@@ -62,12 +65,15 @@ export class AhorcadoPage implements OnInit {
     { value: "9", disabled: false }
   ];
 
-  constructor(private moviesService: MoviesService) {
+  constructor(private moviesService: MoviesService, private storageService: StorageService) {
     this.moviesService.getMovies().subscribe(
       (data: any[]) => {
         this.movies = data;
         this.getMovie();
       });
+    this.storageService.getUsername().then(name => {
+      this.username = name;
+    });
   }
 
   ngOnInit() { }
@@ -90,19 +96,20 @@ export class AhorcadoPage implements OnInit {
     if (this.gameFinished()) {
       this.title = "Has ganado!";
       this.image = imagePath + "game_won.png";
-      this.showAnswer();
+      this.showAnswer(VICTORY);
     } else if (this.attempts > 0) {
       this.title = "Te quedan " + this.attempts + " intentos";
       this.image = this.setImage();
     } else {
       this.title = "Has perdido";
       this.image = imagePath + "game_lost.png";
-      this.showAnswer();
+      this.showAnswer(DEFEAT);
     }
   }
 
   changeUsername(username) {
     this.username = username;
+    this.storageService.setUsername(username);
     this.resetBoard();
   }
 
@@ -137,13 +144,14 @@ export class AhorcadoPage implements OnInit {
 
   }
 
-  showAnswer() {
+  showAnswer(result) {
     this.attempts = 0;
     this.answer = this.words.map((word) => {
       return word.split("").map((c) => {
         return c;
       });
     });
+    this.saveRanking(result);
   }
 
   resetBoard() {
@@ -157,6 +165,30 @@ export class AhorcadoPage implements OnInit {
     this.numbers.map((number => {
       number.disabled = false;
     }));
+  }
+
+  saveRanking(result) {
+    this.storageService.getRanking().then(rankingJSON => {
+      var ranking = JSON.parse(rankingJSON);
+      if (ranking === null) {
+        ranking = [];
+      }
+      var userData = {
+        'username': this.username,
+        'victories': result === VICTORY ? 1 : 0,
+        'defeats': result === DEFEAT ? 1 : 0
+      };
+      ranking = ranking.filter((r) => {
+        if (r.username === this.username) {
+          userData = r;
+          if (result === VICTORY) { userData.victories++; }
+          if (result === DEFEAT) { userData.defeats++; }
+        }
+        return r.username !== this.username;
+      });
+      ranking.push(userData);
+      this.storageService.setRanking(JSON.stringify(ranking));
+    });
   }
 
 }
