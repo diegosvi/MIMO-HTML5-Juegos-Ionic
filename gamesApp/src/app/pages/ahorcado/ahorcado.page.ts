@@ -17,6 +17,7 @@ export class AhorcadoPage implements OnInit {
   movie;
   words;
   answer;
+  username = "";
 
   letters = [
     { value: "a", disabled: false },
@@ -98,6 +99,11 @@ export class AhorcadoPage implements OnInit {
       this.image = imagePath + "game_lost.png";
       this.showAnswer();
     }
+  }
+
+  changeUsername(username) {
+    this.username = username;
+    this.resetBoard();
   }
 
   checkAnswer(character) {

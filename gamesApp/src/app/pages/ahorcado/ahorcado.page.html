@@ -11,9 +11,10 @@
 
   <div class="App">
     <header>
+      <username-input [username]="username" (edit)="changeUsername($event)"></username-input>
       <h4 id="title">{{title}}</h4>
     </header>
-    <section>
+    <section *ngIf="username !== ''">
       <game-image [imagePath]="image"></game-image>
       <answer [words]="words" [answer]="answer"></answer>
       <characters-box *ngIf="attempts > 0" [letters]="letters" [numbers]="numbers" (select)="selectCharacter($event)">
