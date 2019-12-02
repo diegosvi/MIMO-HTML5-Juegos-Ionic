@@ -20,7 +20,7 @@ export class AhorcadoPage implements OnInit {
   movie;
   words;
   answer;
-  username = "";
+  username;
 
   letters = [
     { value: "a", disabled: false },
@@ -109,7 +109,9 @@ export class AhorcadoPage implements OnInit {
 
   changeUsername(username) {
     this.username = username;
-    this.storageService.setUsername(username);
+    if (username !== "") {
+      this.storageService.setUsername(username);
+    }
     this.resetBoard();
   }
 
@@ -167,27 +169,33 @@ export class AhorcadoPage implements OnInit {
     }));
   }
 
-  saveRanking(result) {
+  saveRanking(result: number) {
     this.storageService.getRanking().then(rankingJSON => {
       var ranking = JSON.parse(rankingJSON);
       if (ranking === null) {
         ranking = [];
       }
-      var userData = {
-        'username': this.username,
+      var ahorcadoData = {
         'victories': result === VICTORY ? 1 : 0,
         'defeats': result === DEFEAT ? 1 : 0
       };
-      ranking = ranking.filter((r) => {
+      var tresEnRayaData = null;
+      ranking = ranking.filter(r => {
         if (r.username === this.username) {
-          userData = r;
-          if (result === VICTORY) { userData.victories++; }
-          if (result === DEFEAT) { userData.defeats++; }
+          ahorcadoData.victories = r.ahorcado.victories + ahorcadoData.victories;
+          ahorcadoData.defeats = r.ahorcado.defeats + ahorcadoData.defeats;
+          tresEnRayaData = r.tresEnRayaData;
         }
         return r.username !== this.username;
       });
+      var userData = {
+        'username': this.username,
+        'ahorcado': ahorcadoData,
+        'tresEnRaya': tresEnRayaData
+      };
       ranking.push(userData);
       this.storageService.setRanking(JSON.stringify(ranking));
+      console.log(JSON.stringify(ranking));
     });
   }
 

@@ -11,6 +11,10 @@ export class StorageService {
 
   constructor(private storage: Storage) { }
 
+  public async cleanData() {
+    return await this.storage.clear();
+  }
+
   public async getUsername() {
     return await this.get(USERNAME_STORAGE_KEY);
   }
