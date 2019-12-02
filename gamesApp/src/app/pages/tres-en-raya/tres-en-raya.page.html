@@ -11,10 +11,12 @@
 
   <div>
     <header>
+      <username-input [username]="username" (edit)="changeUsername($event)"></username-input>
       <game-mode (select)="setGameMode($event)"></game-mode>
       <h4 id="title">{{title}}</h4>
     </header>
-    <board [dimension]="dimension" [matrix]="matrix" [gameFinished]="gameFinished" [victoryCells]="victoryCells" (select)="playerTurn($event)">
+    <board [dimension]="dimension" [matrix]="matrix" [gameFinished]="gameFinished" [victoryCells]="victoryCells"
+      (select)="playerTurn($event)">
     </board>
     <footer>
       <ion-button color="medium" (click)="setDimensionTo3()">Reiniciar partida (3x3)</ion-button>

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from 'src/app/servicios/storage/storage.service';
 
 const X = "X";
 const O = "O";
 const EMPTY_CELL = "";
 const MANUAL_MODE = "manual";
 const EASY_MODE = "easy";
+const VICTORY = 0;
+const DEFEAT = 1;
 
 @Component({
   selector: 'app-tres-en-raya',
@@ -21,8 +24,13 @@ export class TresEnRayaPage implements OnInit {
   matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
   victoryCells = Array(this.dimension).fill(EMPTY_CELL);
   minimaxOptions = new Map();
+  username;
 
-  constructor() { }
+  constructor(private storageService: StorageService) {
+    this.storageService.getUsername().then(name => {
+      this.username = name;
+    });
+  }
 
   ngOnInit() { }
 
@@ -185,6 +193,44 @@ export class TresEnRayaPage implements OnInit {
     this.resetBoard();
   }
 
+  changeUsername(username) {
+    this.username = username;
+    if (username !== "") {
+      this.storageService.setUsername(username);
+    }
+    this.resetBoard();
+  }
+
+  saveRanking(result: number) {
+    this.storageService.getRanking().then(rankingJSON => {
+      var ranking = JSON.parse(rankingJSON);
+      if (ranking === null) {
+        ranking = [];
+      }
+      var ahorcadoData = {
+        'victories': result === VICTORY ? 1 : 0,
+        'defeats': result === DEFEAT ? 1 : 0
+      };
+      var tresEnRayaData = null;
+      ranking = ranking.filter(r => {
+        if (r.username === this.username) {
+          ahorcadoData.victories = r.ahorcado.victories + ahorcadoData.victories;
+          ahorcadoData.defeats = r.ahorcado.defeats + ahorcadoData.defeats;
+          tresEnRayaData = r.tresEnRayaData;
+        }
+        return r.username !== this.username;
+      });
+      var userData = {
+        'username': this.username,
+        'ahorcado': ahorcadoData,
+        'tresEnRaya': tresEnRayaData
+      };
+      ranking.push(userData);
+      this.storageService.setRanking(JSON.stringify(ranking));
+      console.log(JSON.stringify(ranking));
+    });
+  }
+
   // MARK: Computer functions
 
   computersTurn() {
@@ -318,7 +364,7 @@ export class TresEnRayaPage implements OnInit {
             var random = this.getRandomNumber(0, bestArray.length - 1);
             result = bestArray[random];
           }
-          
+
         } else {
           result = bestResult;
         }
