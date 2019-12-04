@@ -7,7 +7,7 @@ import { AhorcadoPage } from './ahorcado.page';
 import { AnswerComponent } from 'src/app/componentes/answer/answer.component';
 import { CharactersBoxComponent } from 'src/app/componentes/characters-box/characters-box.component';
 import { GameImageComponent } from 'src/app/componentes/game-image/game-image.component';
-import { UsernameInputComponent } from 'src/app/componentes/username-input/username-input.component';
+import { UsernameInputModule } from 'src/app/modulos/username-input/username-input.module';
 
 const routes: Routes = [
   {
@@ -21,8 +21,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    UsernameInputModule
   ],
-  declarations: [AhorcadoPage, AnswerComponent, CharactersBoxComponent, GameImageComponent, UsernameInputComponent]
+  declarations: [AhorcadoPage, AnswerComponent, CharactersBoxComponent, GameImageComponent]
 })
 export class AhorcadoPageModule { }

@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { TresEnRayaPage } from './tres-en-raya.page';
 import { BoardComponent } from 'src/app/componentes/board/board.component';
 import { GameModeComponent } from 'src/app/componentes/game-mode/game-mode.component';
-import { UsernameInputComponent } from 'src/app/componentes/username-input/username-input.component';
+import { UsernameInputModule } from 'src/app/modulos/username-input/username-input.module';
 
 const routes: Routes = [
   {
@@ -20,8 +20,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    UsernameInputModule
   ],
-  declarations: [TresEnRayaPage, BoardComponent, GameModeComponent, UsernameInputComponent]
+  declarations: [TresEnRayaPage, BoardComponent, GameModeComponent]
 })
 export class TresEnRayaPageModule { }
