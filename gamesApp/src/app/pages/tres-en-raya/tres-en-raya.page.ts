@@ -124,9 +124,15 @@ export class TresEnRayaPage implements OnInit {
   }
 
   setVictoryCells(init: number, sum: number) {
-    this.title = "Victoria de " + this.matrix[Math.floor(init / this.dimension)][Math.floor(init % this.dimension)];
+    var value = this.matrix[Math.floor(init / this.dimension)][Math.floor(init % this.dimension)]
+    this.title = "Victoria de " + value;
     for (var i = 0; i < this.dimension; i++) {
       this.victoryCells[i] = init + (i * sum);
+    }
+    if (value === X) {
+      this.saveRanking(VICTORY);
+    } else {
+      this.saveRanking(DEFEAT);
     }
   }
 
@@ -207,16 +213,16 @@ export class TresEnRayaPage implements OnInit {
       if (ranking === null) {
         ranking = [];
       }
-      var ahorcadoData = {
+      var tresEnRayaData = {
         'victories': result === VICTORY ? 1 : 0,
         'defeats': result === DEFEAT ? 1 : 0
       };
-      var tresEnRayaData = null;
+      var ahorcadoData = null;
       ranking = ranking.filter(r => {
         if (r.username === this.username) {
-          ahorcadoData.victories = r.ahorcado.victories + ahorcadoData.victories;
-          ahorcadoData.defeats = r.ahorcado.defeats + ahorcadoData.defeats;
-          tresEnRayaData = r.tresEnRayaData;
+          tresEnRayaData.victories = r.tresEnRaya === null ? tresEnRayaData.victories : r.tresEnRaya.victories + tresEnRayaData.victories;
+          tresEnRayaData.defeats = r.tresEnRaya === null ? tresEnRayaData.defeats : r.tresEnRaya.defeats + tresEnRayaData.defeats;
+          ahorcadoData = r.ahorcado;
         }
         return r.username !== this.username;
       });
@@ -227,7 +233,6 @@ export class TresEnRayaPage implements OnInit {
       };
       ranking.push(userData);
       this.storageService.setRanking(JSON.stringify(ranking));
-      console.log(JSON.stringify(ranking));
     });
   }
 

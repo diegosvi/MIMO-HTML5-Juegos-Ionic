@@ -182,9 +182,9 @@ export class AhorcadoPage implements OnInit {
       var tresEnRayaData = null;
       ranking = ranking.filter(r => {
         if (r.username === this.username) {
-          ahorcadoData.victories = r.ahorcado.victories + ahorcadoData.victories;
-          ahorcadoData.defeats = r.ahorcado.defeats + ahorcadoData.defeats;
-          tresEnRayaData = r.tresEnRayaData;
+          ahorcadoData.victories = r.ahorcado === null ? ahorcadoData.victories : r.ahorcado.victories + ahorcadoData.victories;
+          ahorcadoData.defeats = r.ahorcado === null ? ahorcadoData.defeats : r.ahorcado.defeats + ahorcadoData.defeats;
+          tresEnRayaData = r.tresEnRaya;
         }
         return r.username !== this.username;
       });
@@ -195,7 +195,6 @@ export class AhorcadoPage implements OnInit {
       };
       ranking.push(userData);
       this.storageService.setRanking(JSON.stringify(ranking));
-      console.log(JSON.stringify(ranking));
     });
   }
 
