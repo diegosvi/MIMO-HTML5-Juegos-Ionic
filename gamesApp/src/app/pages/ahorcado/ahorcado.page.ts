@@ -88,7 +88,7 @@ export class AhorcadoPage implements OnInit {
     });
   }
 
-  selectCharacter(character) {
+  selectCharacter(character: string) {
     var success = this.checkAnswer(character);
     if (!success) {
       this.attempts--;
@@ -107,7 +107,7 @@ export class AhorcadoPage implements OnInit {
     }
   }
 
-  changeUsername(username) {
+  changeUsername(username: string) {
     this.username = username;
     if (username !== "") {
       this.storageService.setUsername(username);
@@ -115,7 +115,7 @@ export class AhorcadoPage implements OnInit {
     this.resetBoard();
   }
 
-  checkAnswer(character) {
+  checkAnswer(character: string) {
     var success = false;
     this.answer = this.words.map((word, i) => {
       return word.split("").map((c, j) => {
@@ -146,7 +146,7 @@ export class AhorcadoPage implements OnInit {
 
   }
 
-  showAnswer(result) {
+  showAnswer(result: number) {
     this.attempts = 0;
     this.answer = this.words.map((word) => {
       return word.split("").map((c) => {

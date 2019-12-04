@@ -20,9 +20,4 @@ export class MoviesService {
   getMovies() {
     return this.movies;
   }
-
-  // getMovie() {
-  //   var index = Math.floor(Math.random() * this.movies.length);
-  //   return this.movies.pipe( map( data => data.find(d => d)));
-  // }
 }
