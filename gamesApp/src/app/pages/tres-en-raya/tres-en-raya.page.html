@@ -13,7 +13,7 @@
     <header>
       <username-input [username]="username" (edit)="changeUsername($event)"></username-input>
       <game-mode (select)="setGameMode($event)"></game-mode>
-      <h4 id="title">{{title}}</h4>
+      <h4 id="title"><ion-label>{{title}}</ion-label></h4>
     </header>
     <board [dimension]="dimension" [matrix]="matrix" [gameFinished]="gameFinished" [victoryCells]="victoryCells"
       (select)="playerTurn($event)" *ngIf="username !== null && username !== ''">

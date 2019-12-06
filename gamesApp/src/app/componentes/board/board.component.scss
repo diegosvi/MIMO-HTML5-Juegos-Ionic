@@ -5,6 +5,7 @@ table {
     height: 250px;
     opacity: 1;
     border: none;
+    background: white;
 }
 
 table tr:first-child td {
@@ -41,7 +42,7 @@ tr {
 }
 
 td {
-    border: 5px solid black;
+    border: 5px solid #282c34;
 }
 
 .td3 {

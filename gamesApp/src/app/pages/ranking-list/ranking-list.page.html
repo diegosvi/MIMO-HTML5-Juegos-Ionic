@@ -11,34 +11,14 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col></ion-col>
-      <ion-col>
-        <div> # </div>
-      </ion-col>
-      <ion-col>
-        <div>
-          Usuario
-        </div>
-      </ion-col>
-      <ion-col>
-        <div>
-          Tres en Raya
-        </div>
-      </ion-col>
-      <ion-col>
-        <div>
-          Ahorcado
-        </div>
-      </ion-col>
-      <ion-col></ion-col>
+      <ion-col>#</ion-col>
+      <ion-col>Usuario</ion-col>
+      <ion-col>Tres en Raya</ion-col>
+      <ion-col>Ahorcado</ion-col>
     </ion-row>
-  </ion-grid>
-
-  <ion-grid>
     <ion-row>
       <ion-col></ion-col>
       <ion-col></ion-col>
-      <ion-col></ion-col>
       <ion-col>
         <div>
           <ion-row>
@@ -55,32 +35,33 @@
           </ion-row>
         </div>
       </ion-col>
-      <ion-col></ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-grid *ngFor="let user of ranking; let i = index;">
     <ion-row>
-      <ion-col></ion-col>
       <ion-col>{{i+1}}</ion-col>
       <ion-col>{{user.username}}</ion-col>
       <ion-col>
-        <div>
-          <ion-row>
-            <ion-col>{{user.tresEnRaya.victories}}</ion-col>
-            <ion-col>{{user.tresEnRaya.defeats}}</ion-col>
-          </ion-row>
-        </div>
+        <ion-row *ngIf="user.tresEnRaya !== null">
+          <ion-col>{{user.tresEnRaya.victories}}</ion-col>
+          <ion-col>{{user.tresEnRaya.defeats}}</ion-col>
+        </ion-row>
+        <ion-row *ngIf="user.tresEnRaya === null">
+          <ion-col>0</ion-col>
+          <ion-col>0</ion-col>
+        </ion-row>
       </ion-col>
       <ion-col>
-        <div>
-          <ion-row>
-            <ion-col>{{user.ahorcado.victories}}</ion-col>
-            <ion-col>{{user.ahorcado.defeats}}</ion-col>
-          </ion-row>
-        </div>
+        <ion-row *ngIf="user.ahorcado !== null">
+          <ion-col>{{user.ahorcado.victories}}</ion-col>
+          <ion-col>{{user.ahorcado.defeats}}</ion-col>
+        </ion-row>
+        <ion-row *ngIf="user.ahorcado === null">
+          <ion-col>0</ion-col>
+          <ion-col>0</ion-col>
+        </ion-row>
       </ion-col>
-      <ion-col></ion-col>
     </ion-row>
   </ion-grid>
 

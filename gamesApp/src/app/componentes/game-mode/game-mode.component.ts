@@ -4,7 +4,7 @@ import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'game-mode',
   templateUrl: './game-mode.component.html',
-  styleUrls: ['./game-mode.component.scss'],
+  styleUrls: ['./game-mode.component.scss', '../../app.component.scss'],
 })
 export class GameModeComponent implements OnInit {
 

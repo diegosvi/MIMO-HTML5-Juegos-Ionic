@@ -10,21 +10,21 @@
 
   <ion-list>
     <ion-list-header>
-      <ion-title>Elige un juego</ion-title>
+      <ion-title>
+        <ion-label>Elige un juego</ion-label>
+      </ion-title>
     </ion-list-header>
-    <ion-item id="tresEnRayaItem" lines="none">
-      <ion-button size="large" slot="end" detail [routerLink]="['/tresEnRaya']">Tres en Raya</ion-button>
-    </ion-item>
-    <ion-item id="ahorcadoItem" lines="none">
-      <ion-button size="large" slot="start" detail [routerLink]="['/ahorcado']">Ahorcado</ion-button>
-    </ion-item>
+    <ion-button class="gameButton" detail [routerLink]="['/tresEnRaya']">Tres en Raya</ion-button>
+    <ion-button class="gameButton" detail [routerLink]="['/ahorcado']">Ahorcado</ion-button>
   </ion-list>
 
   <ion-list>
     <ion-list-header>
-      <ion-title>Ver el ranking</ion-title>
+      <ion-title>
+        <ion-label>Ver el ranking</ion-label>
+      </ion-title>
     </ion-list-header>
-    <ion-button size="large" detail [routerLink]="['/ranking']">Ranking</ion-button>
+    <ion-button detail [routerLink]="['/ranking']">Ranking</ion-button>
   </ion-list>
 
 </ion-content>
