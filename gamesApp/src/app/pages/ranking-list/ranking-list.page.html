@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="app-title">Ranking</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content">
+
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col>
+        <div> # </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          Usuario
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          Tres en Raya
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          Ahorcado
+        </div>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col>
+        <div>
+          <ion-row>
+            <ion-col>Victorias</ion-col>
+            <ion-col>Derrotas</ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-row>
+            <ion-col>Victorias</ion-col>
+            <ion-col>Derrotas</ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngFor="let user of ranking; let i = index;">
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col>{{i+1}}</ion-col>
+      <ion-col>{{user.username}}</ion-col>
+      <ion-col>
+        <div>
+          <ion-row>
+            <ion-col>{{user.tresEnRaya.victories}}</ion-col>
+            <ion-col>{{user.tresEnRaya.defeats}}</ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-row>
+            <ion-col>{{user.ahorcado.victories}}</ion-col>
+            <ion-col>{{user.ahorcado.defeats}}</ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

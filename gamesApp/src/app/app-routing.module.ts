@@ -5,7 +5,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
   { path: 'ahorcado', loadChildren: './pages/ahorcado/ahorcado.module#AhorcadoPageModule' },
-  { path: 'tres-en-raya', loadChildren: './pages/tres-en-raya/tres-en-raya.module#TresEnRayaPageModule' },
+  { path: 'tresEnRaya', loadChildren: './pages/tres-en-raya/tres-en-raya.module#TresEnRayaPageModule' },
+  { path: 'ranking', loadChildren: './pages/ranking-list/ranking-list.module#RankingListPageModule' },
+
 ];
 
 @NgModule({
