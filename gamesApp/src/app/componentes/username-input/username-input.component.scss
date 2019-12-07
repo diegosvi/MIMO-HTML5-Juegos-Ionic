@@ -1,7 +1,25 @@
-#username-form {
-    width: 25%;
-    margin: 20px auto;
-    display: flex;
+@media (min-width: 1000px) {
+    #username-form {
+        width: 25%;
+        margin: 20px auto;
+        display: flex;
+    }
+}
+
+@media (max-width: 999px) {
+    #username-form {
+        width: 50%;
+        margin: 20px auto;
+        display: flex;
+    }
+}
+
+@media (max-width: 500px) {
+    #username-form {
+        width: 100%;
+        margin: 20px auto;
+        display: flex;
+    }
 }
 
 #username-form-item {
