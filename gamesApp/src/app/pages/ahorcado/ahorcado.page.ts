@@ -13,14 +13,14 @@ const DEFEAT = 1;
 })
 export class AhorcadoPage implements OnInit {
 
-  title = "Iniciar partida";
-  image = imagePath + "hangman1.png";
-  attempts = 8;
+  username;
   movies;
+  title;
+  image;
+  attempts;
   movie;
   words;
   answer;
-  username;
 
   letters = [
     { value: "a", disabled: false },
@@ -66,20 +66,50 @@ export class AhorcadoPage implements OnInit {
   ];
 
   constructor(private moviesService: MoviesService, private storageService: StorageService) {
-    this.moviesService.getMovies().subscribe(
-      (data: any[]) => {
-        this.movies = data;
-        this.getMovie();
-      });
-    this.storageService.getUsername().then(name => {
-      this.username = name;
-    });
+    this.getUsername();
   }
 
   ngOnInit() { }
 
-  getMovie() {
-    this.movie = this.movies[Math.floor(Math.random() * this.movies.length)];
+  //MARK: Obtención inicial de datos
+
+  getUsername() {
+    this.storageService.getUsername().then(name => {
+      this.username = name;
+      this.moviesService.getMovies().subscribe(
+        (data: any[]) => {
+          this.movies = data;
+          this.getGameData(name);
+        });
+    });
+  }
+
+  getGameData(username: string) {
+    this.storageService.getAhorcadoData(username).then(jsonData => {
+
+      if (jsonData !== null) {
+        var data = JSON.parse(jsonData);
+        this.title = data.title;
+        this.attempts = data.attempts;
+        this.image = data.image;
+        this.movie = data.movie;
+        this.words = data.movie.split(" ");
+        this.answer = data.answer;
+        this.letters = data.letters;
+        this.numbers = data.numbers;
+      } else {
+        this.generateData(this.movies);
+      }
+    });
+  }
+
+  //MARK: Generación inicial de datos
+
+  generateData(movies: string[]) {
+    this.title = "Iniciar partida";
+    this.attempts = 8;
+    this.image = imagePath + "hangman1.png";
+    this.movie = movies[Math.floor(Math.random() * movies.length)];
     this.words = this.movie.split(" ");
     this.answer = this.words.map((word) => {
       return word.split("").map(() => {
@@ -88,12 +118,22 @@ export class AhorcadoPage implements OnInit {
     });
   }
 
+  //MARK: Funciones del juego
+
+  changeUsername(username: string) {
+    this.username = username;
+    if (username !== "") {
+      this.storageService.setUsername(username);
+    }
+    this.getGameData(username);
+  }
+
   selectCharacter(character: string) {
     var success = this.checkAnswer(character);
     if (!success) {
       this.attempts--;
     }
-    if (this.gameFinished()) {
+    if (this.isGameFinished()) {
       this.title = "Has ganado!";
       this.image = imagePath + "game_won.png";
       this.showAnswer(VICTORY);
@@ -105,14 +145,7 @@ export class AhorcadoPage implements OnInit {
       this.image = imagePath + "game_lost.png";
       this.showAnswer(DEFEAT);
     }
-  }
-
-  changeUsername(username: string) {
-    this.username = username;
-    if (username !== "") {
-      this.storageService.setUsername(username);
-    }
-    this.resetBoard();
+    this.saveGameData();
   }
 
   checkAnswer(character: string) {
@@ -130,7 +163,13 @@ export class AhorcadoPage implements OnInit {
     return success
   }
 
-  gameFinished() {
+  setImage() {
+    var imageId = 9 - this.attempts;
+    return imagePath + "hangman" + imageId + ".png";
+
+  }
+
+  isGameFinished() {
     var gameFinished = true;
     for (let word of this.answer) {
       for (let character of word) {
@@ -138,12 +177,6 @@ export class AhorcadoPage implements OnInit {
       }
     }
     return gameFinished;
-  }
-
-  setImage() {
-    var imageId = 9 - this.attempts;
-    return imagePath + "hangman" + imageId + ".png";
-
   }
 
   showAnswer(result: number) {
@@ -156,17 +189,19 @@ export class AhorcadoPage implements OnInit {
     this.saveRanking(result);
   }
 
-  resetBoard() {
-    this.title = "Iniciar partida";
-    this.image = imagePath + "hangman1.png";
-    this.attempts = 8;
-    this.getMovie();
-    this.letters.map((letter => {
-      letter.disabled = false;
-    }));
-    this.numbers.map((number => {
-      number.disabled = false;
-    }));
+  //MARK: Funciones de guardado de datos del juego
+
+  saveGameData() {
+    var data = {
+      'title': this.title,
+      'image': this.image,
+      "attempts": this.attempts,
+      'movie': this.movie,
+      'answer': this.answer,
+      "letters": this.letters,
+      "numbers": this.numbers
+    };
+    this.storageService.setAhorcadoData(JSON.stringify(data), this.username);
   }
 
   saveRanking(result: number) {
@@ -196,6 +231,19 @@ export class AhorcadoPage implements OnInit {
       ranking.push(userData);
       this.storageService.setRanking(JSON.stringify(ranking));
     });
+  }
+
+  //MARK: Función de reinicio el juego
+
+  resetBoard() {
+    this.generateData(this.movies);
+    this.letters.map((letter => {
+      letter.disabled = false;
+    }));
+    this.numbers.map((number => {
+      number.disabled = false;
+    }));
+    this.saveGameData();
   }
 
 }

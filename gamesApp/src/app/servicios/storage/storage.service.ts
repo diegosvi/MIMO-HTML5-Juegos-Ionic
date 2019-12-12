@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 const USERNAME_STORAGE_KEY = 'username';
+const AHORCADO_STORAGE_KEY = 'ahorcado-';
 const RANKING_STORAGE_KEY = 'ranking';
 
 @Injectable({
@@ -15,6 +16,8 @@ export class StorageService {
     return await this.storage.clear();
   }
 
+  // Username
+
   public async getUsername() {
     return await this.get(USERNAME_STORAGE_KEY);
   }
@@ -22,6 +25,18 @@ export class StorageService {
   public setUsername(value: any) {
     return this.set(USERNAME_STORAGE_KEY, value);
   }
+
+  // Ahorcado data
+
+  public async getAhorcadoData(username: string) {
+    return await this.get(AHORCADO_STORAGE_KEY + username);
+  }
+
+  public setAhorcadoData(value: any, username: string) {
+    return this.set(AHORCADO_STORAGE_KEY + username, value);
+  }
+
+  // Ranking
 
   public async getRanking() {
     return await this.get(RANKING_STORAGE_KEY);
