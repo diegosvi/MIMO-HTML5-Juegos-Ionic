@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 
 @Component({
@@ -8,6 +8,7 @@ import { EventEmitter } from '@angular/core';
 })
 export class GameModeComponent implements OnInit {
 
+  @Input() mode;
   @Output() select = new EventEmitter();
 
   constructor() { }

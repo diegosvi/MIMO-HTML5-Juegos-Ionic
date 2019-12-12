@@ -16,23 +16,60 @@ const DEFEAT = 1;
 })
 export class TresEnRayaPage implements OnInit {
 
-  mode = EASY_MODE;
-  title = "Iniciar partida";
-  dimension = 0;
-  turn = X;
-  gameFinished = false;
-  matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
-  victoryCells = Array(this.dimension).fill(EMPTY_CELL);
-  minimaxOptions = new Map();
   username;
+  mode;
+  title;
+  dimension;
+  turn;
+  gameFinished;
+  matrix;
+  victoryCells;
+  minimaxOptions = new Map();
 
   constructor(private storageService: StorageService) {
-    this.storageService.getUsername().then(name => {
-      this.username = name;
-    });
+    this.getUsername();
   }
 
   ngOnInit() { }
+
+  // MARK: Initial data load
+
+  getUsername() {
+    this.storageService.getUsername().then(name => {
+      this.username = name;
+      this.getGameData(name);
+    });
+  }
+
+  getGameData(username: string) {
+    this.storageService.getTresEnRayaData(username).then(jsonData => {
+
+      if (jsonData !== null) {
+        var data = JSON.parse(jsonData);
+        this.mode = data.mode;
+        this.title = data.title;
+        this.dimension = data.dimension;
+        this.turn = data.turn;
+        this.gameFinished = data.gameFinished;
+        this.matrix = data.matrix;
+        this.victoryCells = data.victoryCells;
+      } else {
+        this.generateData();
+      }
+    });
+  }
+
+  //MARK: Initial data generation
+
+  generateData() {
+    this.mode = EASY_MODE;
+    this.title = "Iniciar partida";
+    this.dimension = 0;
+    this.turn = X;
+    this.gameFinished = false;
+    this.matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
+    this.victoryCells = Array(this.dimension).fill(EMPTY_CELL);
+  }
 
   // MARK: Auxiliar functions
 
@@ -87,6 +124,7 @@ export class TresEnRayaPage implements OnInit {
       this.turn = this.turn === X ? O : X;
       this.title = "Turno de " + this.turn;
     }
+    this.saveGameData();
   }
 
   checkCells(matrix: string[][], value: string, x: number, y: number) {
@@ -182,6 +220,7 @@ export class TresEnRayaPage implements OnInit {
     this.gameFinished = false;
     this.matrix = Array(this.dimension).fill(Array(this.dimension).fill(EMPTY_CELL));
     this.victoryCells = Array(this.dimension).fill(EMPTY_CELL);
+    this.saveGameData();
   }
 
   setDimensionTo3() {
@@ -204,36 +243,7 @@ export class TresEnRayaPage implements OnInit {
     if (username !== "") {
       this.storageService.setUsername(username);
     }
-    this.resetBoard();
-  }
-
-  saveRanking(result: number) {
-    this.storageService.getRanking().then(rankingJSON => {
-      var ranking = JSON.parse(rankingJSON);
-      if (ranking === null) {
-        ranking = [];
-      }
-      var tresEnRayaData = {
-        'victories': result === VICTORY ? 1 : 0,
-        'defeats': result === DEFEAT ? 1 : 0
-      };
-      var ahorcadoData = null;
-      ranking = ranking.filter(r => {
-        if (r.username === this.username) {
-          tresEnRayaData.victories = r.tresEnRaya === null ? tresEnRayaData.victories : r.tresEnRaya.victories + tresEnRayaData.victories;
-          tresEnRayaData.defeats = r.tresEnRaya === null ? tresEnRayaData.defeats : r.tresEnRaya.defeats + tresEnRayaData.defeats;
-          ahorcadoData = r.ahorcado;
-        }
-        return r.username !== this.username;
-      });
-      var userData = {
-        'username': this.username,
-        'ahorcado': ahorcadoData,
-        'tresEnRaya': tresEnRayaData
-      };
-      ranking.push(userData);
-      this.storageService.setRanking(JSON.stringify(ranking));
-    });
+    this.getGameData(username);
   }
 
   // MARK: Computer functions
@@ -413,6 +423,50 @@ export class TresEnRayaPage implements OnInit {
       });
       return best;
     }
+  }
+
+  //MARK: Save data functions
+
+  saveGameData() {
+    var data = {
+      'mode': this.mode,
+      'title': this.title,
+      'dimension': this.dimension,
+      'turn': this.turn,
+      "gameFinished": this.gameFinished,
+      'matrix': this.matrix,
+      'victoryCells': this.victoryCells
+    };
+    this.storageService.setTresEnRayaData(JSON.stringify(data), this.username);
+  }
+
+  saveRanking(result: number) {
+    this.storageService.getRanking().then(rankingJSON => {
+      var ranking = JSON.parse(rankingJSON);
+      if (ranking === null) {
+        ranking = [];
+      }
+      var tresEnRayaData = {
+        'victories': result === VICTORY ? 1 : 0,
+        'defeats': result === DEFEAT ? 1 : 0
+      };
+      var ahorcadoData = null;
+      ranking = ranking.filter(r => {
+        if (r.username === this.username) {
+          tresEnRayaData.victories = r.tresEnRaya === null ? tresEnRayaData.victories : r.tresEnRaya.victories + tresEnRayaData.victories;
+          tresEnRayaData.defeats = r.tresEnRaya === null ? tresEnRayaData.defeats : r.tresEnRaya.defeats + tresEnRayaData.defeats;
+          ahorcadoData = r.ahorcado;
+        }
+        return r.username !== this.username;
+      });
+      var userData = {
+        'username': this.username,
+        'ahorcado': ahorcadoData,
+        'tresEnRaya': tresEnRayaData
+      };
+      ranking.push(userData);
+      this.storageService.setRanking(JSON.stringify(ranking));
+    });
   }
 
 }

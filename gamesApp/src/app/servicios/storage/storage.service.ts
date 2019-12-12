@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage';
 
 const USERNAME_STORAGE_KEY = 'username';
 const AHORCADO_STORAGE_KEY = 'ahorcado-';
+const TRES_EN_RAYA_STORAGE_KEY = 'tres_en_raya-';
 const RANKING_STORAGE_KEY = 'ranking';
 
 @Injectable({
@@ -34,6 +35,16 @@ export class StorageService {
 
   public setAhorcadoData(value: any, username: string) {
     return this.set(AHORCADO_STORAGE_KEY + username, value);
+  }
+
+  // Tres En Raya data
+
+  public async getTresEnRayaData(username: string) {
+    return await this.get(TRES_EN_RAYA_STORAGE_KEY + username);
+  }
+
+  public setTresEnRayaData(value: any, username: string) {
+    return this.set(TRES_EN_RAYA_STORAGE_KEY + username, value);
   }
 
   // Ranking
