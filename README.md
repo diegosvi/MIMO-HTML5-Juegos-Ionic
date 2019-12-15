@@ -5,6 +5,8 @@ App created with Ionic to play Tic-Tac-Toe and Hangman games.
 ![1](https://user-images.githubusercontent.com/23210811/70856204-b31c4e00-1ed7-11ea-8e2f-6d948628a965.PNG)
 ![5](https://user-images.githubusercontent.com/23210811/70856215-dd6e0b80-1ed7-11ea-9176-65e4ba74fde1.PNG)
 
+
+
 - Tic-Tac-Toe game.
     * There are 2 game modes, and 2 players in each mode:
         i. Manual: Human vs Human.
@@ -17,6 +19,8 @@ App created with Ionic to play Tic-Tac-Toe and Hangman games.
 
 ![2](https://user-images.githubusercontent.com/23210811/70856208-c4655a80-1ed7-11ea-8372-88ec828e9d1d.png)
 
+
+
 - Hangman game.
     * The player has 8 attempts to solve the game.
     * The player will introduce a letter for each attempt:
@@ -25,6 +29,8 @@ App created with Ionic to play Tic-Tac-Toe and Hangman games.
     * The player wins the game when achieves to guess every letter without using up all the attempts.
 
 ![3](https://user-images.githubusercontent.com/23210811/70856211-cc24ff00-1ed7-11ea-8d6c-d68c4774f33b.PNG)
+
+
 
 Also, there is a page where you can view the ranking of every user saved in the app, with the victories and defeats per game of each one.
 
